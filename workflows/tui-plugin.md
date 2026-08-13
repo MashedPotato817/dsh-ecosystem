@@ -1,6 +1,21 @@
 # Workflow：DSH 终端 TUI 客户端（路线图第 3 项）—— 调研纪要
 
-> 状态：调研完成（了解阶段），未开工
+> 状态：里程碑 1 完成（HTTP 载体，`dsh-tui` 项目，能 session.list），未开工渲染
+
+## 设计哲学（北极星）⭐
+
+**目的：在不破坏 DeepSeek 生态的前提下，以插件/客户端形式，满足「Claude Code 的功能」+「Vim 的形式」，在两者之间找平衡与好的结合。**
+
+- **不破坏生态**：TUI 是 DSH 的一个**客户端 face**（契约消费者），不是 fork、不改 host、不复刻内部实现。现有插件（git/browser）照常工作。
+- **插件形式**：以 DSH「一切皆插件」的形态融入生态——独立 npm 包 + profile 组合；需要 host 配合的部分只做最小插件。
+- **Claude Code 的功能**：agent 对话、流式输出、工具调用可视化、斜杠命令、审批/提问、会话 resume——全部由现有契约提供，TUI 只做呈现。
+- **Vim 的形式**：**模态键盘驱动**（normal/insert）、j/k 导航、`/` 搜索、`:` 命令行、状态栏模式指示——高效、可脚本化、终端原生。
+
+**平衡点（功能向 Claude Code 看齐，操作向 Vim 看齐）**：
+- 对话区 = Claude Code 风格（流式渲染、工具状态、审批提示）；
+- 输入/命令 = **Vim 模态**：normal 模式 j/k/gg/G 翻消息、`/` 搜索、Esc 回 normal；insert 模式打字；
+- **`/` 与 `:` 双命令体系**：`/commit` 等斜杠命令走 agent 功能（`command.execute`），`:sessions` `:resume <id>` `:model` `:new` 走 TUI 自身操作；
+- 状态栏：`-- NORMAL --` / `-- INSERT --` + 会话/模型/错误信息。
 
 ## 结论先行
 
@@ -67,13 +82,13 @@ DSH 的「TUI」不是一个小插件，而是一个**客户端应用**（与 We
 3. **MVP 范围**：对话 + 输入 + 斜杠命令 + 会话列表；不做 settings / agent-preset UI。
 4. **与 VSCode 集成的关系**：同一份契约；VSCode 集成可复用 TUI 的载体/会话模型层。
 
-## 里程碑（按最佳实践子集落地）
+## 里程碑（按最佳实践子集落地，融合 Vim 模态设计）
 
-1. **载体**：HTTP 客户端连上 `dsh web` host，能 `session.list`。（契约载体，参考官方 `AbstractApiClient` 设计）
-2. **会话 + 事件接缝（①）**：打开会话、读 history、发 prompt、消费 mux 事件流 → 判别联合事件 → reducer → 状态。
-3. **渲染（②③）**：终端对话视图（`<Static>` 冻结历史 + 流式增量渲染尾部）+ 多行输入 + 斜杠命令 palette（⑧）。
+1. ✅ **载体**：HTTP 客户端连上 `dsh web` host，能 `session.list`。（完成）
+2. **会话 + 事件接缝（①）**：打开会话、读 history、发 prompt、消费 mux 事件流 → 判别联合事件 → reducer。
+3. **渲染 + 模态输入（②③⑤）**：终端对话视图（`<Static>` 冻结历史 + 流式增量渲染尾部）+ **Vim 模态输入**（normal/insert、j/k 导航、`/` 搜索、`:sessions`/`:resume` 命令行、状态栏模式指示）+ 斜杠命令 palette（⑧）。
 4. **会话管理（⑨）**：会话列表/切换/续聊/resume。
 5. **交互 + 清理（⑥⑩）**：审批/提问回应（接 DSH 审批 seam）、终端能力探测/降级、进程退出清理。
 6. **测试 / CI / 发布**。
 
-后置：cell-diff 引擎、vim/emacs 多协议键盘（⑤④）。
+后置：cell-diff 引擎（④）；vim/emacs **多协议键盘解析**（如 termkey、多套键位映射）——先实现基础 Vim 模态（j/k/gg/G//搜索/`:`），扩展协议后置。
