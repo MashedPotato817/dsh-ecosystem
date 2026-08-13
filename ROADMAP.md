@@ -37,13 +37,21 @@ DSH Host（本地进程：agent / 工具 / 插件）
 - **优先级**：高（与用户的网页游戏项目直接相关）
 - **状态**：MCP 探路完成（Edge 实测通过）；原生工具插件规划中（Workflow：[workflows/browser-plugin.md](workflows/browser-plugin.md)）
 
-### 3. 📌 终端 TUI 插件
+### 3. ✅ 终端 TUI 插件（dsh-tui）
 
-- **目标**：终端里像 Vim / Claude Code 一样用 DSH（斜杠命令、多行输入、会话列表、彩色输出）。
-- **技术落点**：无 React 的 `ctx.remote` 客户端 + 终端渲染，作为新 profile 组合
-  （`dsh-base` + TUI 客户端 bundle）。
-- **优先级**：中（官方蓝图预留 "future TUI"，社区无人占位）
-- **状态**：未开始
+- **目标**：终端里像 Claude Code 一样用 DSH（斜杠命令、Vim 模态输入、会话列表、
+  权限档位、流式回复、HUD 状态栏）。
+- **技术落点**：无 React 的 `ctx.remote` 客户端（HTTP + mux SSE）+ Ink 渲染；core 层
+  （`lib/`）纯 Node 零依赖，VSCode 集成可复用。
+- **方向**：**重点对齐 Claude Code**——已落地权限档位（Shift+Tab 循环）、
+  Ctrl+C 双按退出、slash 面板键盘导航、自定义命令（`.claude/commands/*.md`）、
+  `<Static>` 流式优化、HUD 权限徽标。研究笔记：
+  `dsh-tui/docs/research/claude-code-interaction-design-notes.md`（Claude Code 逆向）与
+  `opencode-architecture-notes.md`（OpenCode 架构）。
+- **优先级**：中（官方蓝图预留 "future TUI"）
+- **状态**：✅ 里程碑 1–6 完成并已发布；npm `dsh-tui@0.1.0` + GitHub Release v0.1.0。
+  分支 `feat/dsh-tui` 待用户验收合并 `main`。
+- **仓库**：https://github.com/MashedPotato817/dsh-tui
 
 ### 4. 📌 VSCode 集成
 
