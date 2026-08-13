@@ -31,10 +31,11 @@ DSH Host（本地进程：agent / 工具 / 插件）
 - **目标**：让 DSH 能打开网页、点击、填表、截图、执行 JS —— 直接可用于测试网页游戏
   （blockcraft 等 HTML/JS 项目）。
 - **技术落点**：
-  - 快路径：**Playwright MCP**（已接入 web profile：`@playwright/mcp` + Chromium，24 个浏览器工具）
+  - 快路径：**Playwright MCP**（已接入 web profile：`@playwright/mcp` + 本机 **Edge**
+    （`--browser msedge`，无需下载 Chrome），24 个浏览器工具，实测已通过：打开页面 + 截图 OK）
   - 正路径：原生 `dsh-tool-browser` 工具插件（Playwright 直连，无 MCP 中间层，更可控）
 - **优先级**：高（与用户的网页游戏项目直接相关）
-- **状态**：未开始（MCP 探路已完成）
+- **状态**：MCP 探路完成（Edge 实测通过）；原生工具插件未开始
 
 ### 3. 📌 终端 TUI 插件
 
@@ -49,8 +50,10 @@ DSH Host（本地进程：agent / 工具 / 插件）
 - **目标**：VSCode 里原生面板用 DSH（Diff 视图、选中代码→提问、工具结果点击打开文件）。
 - **技术落点**：
   - 方案 A（快）：VSCode 扩展嵌入 DSH Web 客户端（webview 套壳，体验弱）
-  - 方案 B（正）：VSCode 扩展用 `ctx.remote` / **ACP** 做原生客户端；DSH 侧加
-    `dsh-host-vscode` host 插件（启动 / 端口协商 / 权限）
+  - 方案 B（正）：**参考 Claude Code 的 VSCode 扩展形态**——DSH CLI 跑在 VSCode
+    集成终端里（用户认为 Claude Code 的终端体验不错），扩展提供原生 UI
+    （Diff 视图、审批提示、工具结果点击打开文件）；DSH 侧加 `dsh-host-vscode`
+    host 插件（启动 / 端口协商 / 权限）
 - **优先级**：中（方案 B 优先，A 兜底）
 - **状态**：未开始
 
