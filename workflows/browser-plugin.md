@@ -1,6 +1,6 @@
 # Workflow：dsh-tool-browser —— 原生浏览器自动化工具插件
 
-> 状态：规划中（未开工）｜ 对应路线图第 2 项「正路径」
+> 状态：进行中（里程碑 1-3 完成，真实 Edge 端到端通过）｜ 对应路线图第 2 项「正路径」
 
 ## 0. 结论：有没有人做过？
 
@@ -29,13 +29,13 @@
 
 ## 3. 里程碑（要做的事情）
 
-1. **脚手架**：新文件夹（如 `game/dsh-tool-browser`）+ git init（`feat/*` 分支）+ package.json + apply 骨架 + 测试框架（照 git 插件模式：smoke + 真实集成测试 + CI）。
-2. **Playwright 连通**：用 `playwright` 库 + `channel: 'msedge'` 启动 Edge，验证能打开页面（最小闭环）。
-3. **核心 5 工具**：navigate / click / type / screenshot / snapshot —— 跑通「打开网页 → 截图」端到端。
-4. **扩展工具集**：evaluate / console / network / wait_for / tabs / fill_form 等。
-5. **安全与生命周期**：context 管理、超时/中止、权限审批、结果限长。
-6. **测试 + CI**：真实 Edge 集成测试（照 git 插件）+ GitHub Actions。
-7. **发布**：GitHub Release + npm publish（名 `dsh-tool-browser`，已确认可用）。
+1. ✅ **脚手架**：新文件夹 `game/dsh-tool-browser` + git init（`feat/*` 分支）+ package.json + apply 骨架 + 测试框架。
+2. ✅ **Playwright 连通**：`playwright` 库 + `channel: 'msedge'` 启动 Edge，验证能打开页面（含回退到自带 Chromium）。
+3. ✅ **核心工具**：navigate / click / type / screenshot / snapshot / evaluate / back / press_key / console / wait_for 共 10 个 —— 「打开网页 → 交互 → 截图」端到端测试通过（真实 Edge）。
+4. 📌 **扩展工具集**：tabs / fill_form / select_option / resize / dialog / upload / drag / hover 等。
+5. 📌 **安全与生命周期**：context 管理、超时/中止（已部分实现）、权限审批、结果限长（已部分实现）。
+6. 📌 **测试 + CI**：smoke + 真实 Edge 集成测试已写并通过；GitHub Actions 待推送验证。
+7. 📌 **发布**：GitHub Release + npm publish（名 `dsh-tool-browser`，已确认可用）。
 
 ## 4. 重点（focus，防止分心）
 
