@@ -1,6 +1,6 @@
 # Workflow：dsh-tool-browser —— 原生浏览器自动化工具插件
 
-> 状态：进行中（里程碑 1-3 完成，真实 Edge 端到端通过）｜ 对应路线图第 2 项「正路径」
+> 状态：进行中（里程碑 1-6 完成，19 工具，本机 Edge 与 CI Chromium 双绿）｜ 对应路线图第 2 项「正路径」
 
 ## 0. 结论：有没有人做过？
 
@@ -32,7 +32,7 @@
 1. ✅ **脚手架**：新文件夹 `game/dsh-tool-browser` + git init（`feat/*` 分支）+ package.json + apply 骨架 + 测试框架。
 2. ✅ **Playwright 连通**：`playwright` 库 + `channel: 'msedge'` 启动 Edge，验证能打开页面（含回退到自带 Chromium）。
 3. ✅ **核心工具**：navigate / click / type / screenshot / snapshot / evaluate / back / press_key / console / wait_for 共 10 个 —— 「打开网页 → 交互 → 截图」端到端测试通过（真实 Edge）。
-4. 📌 **扩展工具集**：tabs / fill_form / select_option / resize / dialog / upload / drag / hover 等。
+4. ✅ **扩展工具集**：19 个工具（新增 `browser_fill_form` / `select_option` / `hover` / `drag` / `resize` / `open_tab` / `tabs` / `switch_tab` / `close_tab`，浏览器会话升级为多标签页管理）。
 5. 📌 **安全与生命周期**：context 管理、超时/中止（已部分实现）、权限审批、结果限长（已部分实现）。
 6. 📌 **测试 + CI**：smoke + 真实 Edge 集成测试已写并通过；GitHub Actions 待推送验证。
 7. 📌 **发布**：GitHub Release + npm publish（名 `dsh-tool-browser`，已确认可用）。
