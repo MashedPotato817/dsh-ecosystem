@@ -15,7 +15,23 @@
 - 对话区 = Claude Code 风格（流式渲染、工具状态、审批提示）；
 - 输入/命令 = **Vim 模态**：normal 模式 j/k/gg/G 翻消息、`/` 搜索、Esc 回 normal；insert 模式打字；
 - **`/` 与 `:` 双命令体系**：`/commit` 等斜杠命令走 agent 功能（`command.execute`），`:sessions` `:resume <id>` `:model` `:new` 走 TUI 自身操作；
-- 状态栏：`-- NORMAL --` / `-- INSERT --` + 会话/模型/错误信息。
+- **HUD 风格状态区（参考 Claude Code 的 HUD）**：紧凑常驻显示——模型、token/费用、模式、cwd + Vim 模式指示（`-- NORMAL --`/`-- INSERT --`）；高信息密度、不占对话空间。
+
+## 开放定位与架构决策（开源开放、可作基底）
+
+**目标**：做成开源开放、好集成、能被别人当基底继续开发的「好样式」。
+
+1. **分层架构（为了 VSCode 集成 + 可作基底）**：
+   - `core/`：客户端 + 会话模型（无终端依赖）→ **可被 VSCode Webview / 其它客户端复用**；
+   - `ui/`：Ink 终端界面（对话/输入/状态栏）；
+   - `cli/`：入口——交互式 TUI + **一次性 CLI**。
+2. **配置（参考 OpenCode 的 `opencode.json`）**：JSON 配置文件（如 `dsh-tui.json` / `~/.config/dsh-tui/config.json`）：
+   host URL、默认模型、键位映射、斜杠命令别名、主题。
+3. **CLI 可调用**：`dsh-tui`（交互）+ `dsh-tui "prompt"`（一次性，打印结果退出，类似 `claude -p`）——
+   斜杠命令既能交互用、也能命令行调用。
+4. **斜杠命令一等公民**：palette + `/` 命令（走 `command.execute`），和 Claude Code 一致好用。
+5. **Hard 能力不设限**：暴露完整 agent 契约（工具、子代理、workflow、goal），TUI 不裁剪能力。
+6. **开源开放**：MIT、公开仓库、文档（README/CONTRIBUTING/架构说明）、干净脚手架，让别人能 fork 扩展。
 
 ## 结论先行
 
@@ -89,6 +105,8 @@ DSH 的「TUI」不是一个小插件，而是一个**客户端应用**（与 We
 3. **渲染 + 模态输入（②③⑤）**：终端对话视图（`<Static>` 冻结历史 + 流式增量渲染尾部）+ **Vim 模态输入**（normal/insert、j/k 导航、`/` 搜索、`:sessions`/`:resume` 命令行、状态栏模式指示）+ 斜杠命令 palette（⑧）。
 4. **会话管理（⑨）**：会话列表/切换/续聊/resume。
 5. **交互 + 清理（⑥⑩）**：审批/提问回应（接 DSH 审批 seam）、终端能力探测/降级、进程退出清理。
-6. **测试 / CI / 发布**。
+6. **测试 / CI / 发布**（开源开放：MIT + 公开仓库 + CONTRIBUTING + 架构文档）。
+
+结构（为可作基底）：`core/`（客户端+会话模型，无终端依赖，VSCode 可复用）+ `ui/`（Ink）+ `cli/`（交互 + 一次性 `dsh-tui "prompt"`）。配置参考 OpenCode `opencode.json`。
 
 后置：cell-diff 引擎（④）；vim/emacs **多协议键盘解析**（如 termkey、多套键位映射）——先实现基础 Vim 模态（j/k/gg/G//搜索/`:`），扩展协议后置。
