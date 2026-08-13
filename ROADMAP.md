@@ -35,7 +35,7 @@ DSH Host（本地进程：agent / 工具 / 插件）
     （`--browser msedge`，无需下载 Chrome），24 个浏览器工具，实测已通过：打开页面 + 截图 OK）
   - 正路径：原生 `dsh-tool-browser` 工具插件（Playwright 直连，无 MCP 中间层，更可控）
 - **优先级**：高（与用户的网页游戏项目直接相关）
-- **状态**：MCP 探路完成（Edge 实测通过）；原生工具插件未开始
+- **状态**：MCP 探路完成（Edge 实测通过）；原生工具插件规划中（Workflow：[workflows/browser-plugin.md](workflows/browser-plugin.md)）
 
 ### 3. 📌 终端 TUI 插件
 
